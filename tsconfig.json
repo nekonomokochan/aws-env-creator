@@ -17,6 +17,7 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "newLine": "LF",
+    "declaration": true,
     "typeRoots": [
       "node_modules/@types"
     ],
