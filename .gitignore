@@ -59,3 +59,10 @@ typings/
 
 # next.js build output
 .next
+
+# IDEA Setting File
+.idea
+aws-env-creator.iml
+
+# TypeScript build output
+dist

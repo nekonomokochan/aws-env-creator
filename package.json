@@ -1,0 +1,46 @@
+{
+  "name": "aws-env-creator",
+  "version": "0.0.1",
+  "description": "Create an env file from AWS Secrets Manager.",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "scripts": {
+    "test": "jest --config=jest.config.json",
+    "test:coverage": "jest --config=jest.config.json --collectCoverage=true",
+    "tslint": "tslint --project tsconfig.json --config tslint.json 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}'",
+    "format": "tslint --project tsconfig.json --config tslint.json --fix 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}'",
+    "build": "rm -rf dist && tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nekonomokochan/aws-env-creator.git"
+  },
+  "keywords": [
+    "aws",
+    "secrets",
+    "env",
+    ".env"
+  ],
+  "author": "nekonomokochan <keita.koga.work@gmail.com> (https://github.com/nekonomokochan)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nekonomokochan/aws-env-creator/issues"
+  },
+  "homepage": "https://github.com/nekonomokochan/aws-env-creator#readme",
+  "devDependencies": {
+    "@types/jest": "^23.3.10",
+    "@types/node": "^10.12.12",
+    "coveralls": "^3.0.2",
+    "jest": "^23.6.0",
+    "prettier": "^1.15.3",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "tslint-config-prettier": "^1.17.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript": "^3.2.1"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.370.0"
+  }
+}
