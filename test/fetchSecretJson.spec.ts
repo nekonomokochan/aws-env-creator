@@ -1,22 +1,34 @@
+import AWS from "aws-sdk-mock";
+import path from "path";
 import { fetchSecretJson } from "../src/index";
+import { SecretsManager } from "aws-sdk";
 
 describe("fetchSecretJson", () => {
   it("should be able to fetch Secret JSON", async () => {
-    const secretJson = await fetchSecretJson();
+    AWS.setSDK(path.resolve("node_modules/aws-sdk"));
+
+    const mockResponse = (params: { SecretId: string }, callback: any) => {
+      callback(null, {
+        SecretString: JSON.stringify({
+          SECRET_ID: params.SecretId,
+          ANOTHER_API_KEY: "another_api_key",
+          ANOTHER_API_SECRET: "another_api_secret"
+        })
+      });
+    };
+
+    AWS.mock("SecretsManager", "getSecretValue", mockResponse);
+
+    const client = new SecretsManager();
+    const secretJson = await fetchSecretJson(client, "dev/app");
 
     const expectedJson = {
-      Name: "test",
-      ARN:
-        "arn:aws:secretsmanager:ap-northeast-1:xxxxxxxxxxxx:secret:test-1O5wUG",
-      Versions: [
-        {
-          VersionId: "87b38f9f-5422-4e7f-8fa3-0857c0905b22",
-          VersionStages: ["VERSION4"],
-          LastAccessedDate: 1523059200.0,
-          CreatedDate: 1523092955.717
-        }
-      ]
+      SECRET_ID: "dev/app",
+      ANOTHER_API_KEY: "another_api_key",
+      ANOTHER_API_SECRET: "another_api_secret"
     };
+
+    AWS.restore("SecretsManager", "getSecretValue");
 
     expect(secretJson).toEqual(expectedJson);
   });
