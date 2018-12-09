@@ -1,8 +1,8 @@
 import AWS from "aws-sdk-mock";
 import path from "path";
-import { fetchSecretJson } from "../src/index";
+import { fetchSecretJson } from "../../src";
 import { SecretsManager } from "aws-sdk";
-import MockError from "./lib/MockError";
+import MockError from "../lib/MockError";
 
 describe("fetchSecretJson", () => {
   beforeEach(() => {
