@@ -1,4 +1,5 @@
 import { AWSError, SecretsManager } from "aws-sdk";
+import AwsEnvCreatorError from "./error/AwsEnvCreatorError";
 
 export const fetchSecretJson = async (
   secretsManager: SecretsManager,
@@ -17,6 +18,6 @@ export const fetchSecretJson = async (
       return { key: "value" };
     })
     .catch((error: AWSError) => {
-      return Promise.reject(error);
+      return Promise.reject(new AwsEnvCreatorError(error.code, error.stack));
     });
 };
