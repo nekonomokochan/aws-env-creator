@@ -7,6 +7,10 @@
   "scripts": {
     "test": "jest --config=jest.config.json",
     "test:coverage": "jest --config=jest.config.json --collectCoverage=true",
+    "test:unit": "yarn run test test/unit/",
+    "test:unit:coverage": "yarn run test:coverage test/unit/",
+    "test:integration": "yarn run test test/integration/",
+    "test:integration:coverage": "yarn run test:coverage test/integration/",
     "tslint": "tslint --project tsconfig.json --config tslint.json 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}'",
     "format": "tslint --project tsconfig.json --config tslint.json --fix 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}'",
     "build": "rm -rf dist && tsc"
