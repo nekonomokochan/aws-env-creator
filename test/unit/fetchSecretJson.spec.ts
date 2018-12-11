@@ -4,7 +4,7 @@ import { fetchSecretJson } from "../../src";
 import { SecretsManager } from "aws-sdk";
 import MockError from "../lib/MockError";
 
-describe("fetchSecretJson", () => {
+describe("fetchSecretJson.unitTest", () => {
   beforeEach(() => {
     AWS.setSDK(path.resolve("node_modules/aws-sdk"));
   });
