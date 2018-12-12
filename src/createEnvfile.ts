@@ -5,6 +5,7 @@ import {
 import { fetchSecretJson } from "./fetchSecretJson";
 import fs from "fs";
 import { promisify } from "util";
+import InvalidFileTypeError from "./error/InvalidFileTypeError";
 
 export enum EnvFileType {
   dotenv = ".env"
@@ -20,6 +21,10 @@ export interface ICreateEnvFileParams
 export const createEnvFile = async (
   params: ICreateEnvFileParams
 ): Promise<void> => {
+  if (!isAllowedFileType(params.type)) {
+    return Promise.reject(new InvalidFileTypeError());
+  }
+
   const secretsManager = createSecretsManagerClient({
     region: params.region,
     profile: params.profile
@@ -38,6 +43,15 @@ export const createEnvFile = async (
 
   for (const [key, value] of Object.entries(secretJson)) {
     await appendFile(outputFile, `${key}=${value}\n`);
+  }
+};
+
+const isAllowedFileType = (type: string): boolean => {
+  switch (type) {
+    case EnvFileType.dotenv:
+      return true;
+    default:
+      return false;
   }
 };
 
