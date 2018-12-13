@@ -1,7 +1,7 @@
 import { SecretsManager, SharedIniFileCredentials } from "aws-sdk";
 import { AwsRegion } from "./AwsRegion";
 
-interface ICreateSecretsManagerClientParams {
+export interface ICreateSecretsManagerClientParams {
   region: AwsRegion;
   profile: string;
 }
