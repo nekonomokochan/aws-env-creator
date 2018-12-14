@@ -1,6 +1,6 @@
 import AWS from "aws-sdk-mock";
 import path from "path";
-import { fetchSecretJson } from "../../src";
+import { fetchSecretJson } from "../../src/fetchSecretJson";
 import { SecretsManager } from "aws-sdk";
 import MockError from "../lib/MockError";
 
