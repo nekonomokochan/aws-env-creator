@@ -91,3 +91,6 @@ import { createEnvFile, EnvFileType, AwsRegion } from "@nekonomokochan/aws-env-c
 | secretId  | Your AWS Secrets Manager ID                          | String      |
 | profile   | Your AWS CLI Credentials Name                        | String      |
 | region    | The region where your AWS Secrets Manager is located | String      |
+
+# License
+MIT
