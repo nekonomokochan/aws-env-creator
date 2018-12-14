@@ -13,7 +13,7 @@ export enum EnvFileType {
 
 export interface ICreateEnvFileParams
   extends ICreateSecretsManagerClientParams {
-  type: string;
+  type: EnvFileType | string;
   outputDir: string;
   secretId: string;
 }

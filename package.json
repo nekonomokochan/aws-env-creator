@@ -1,5 +1,5 @@
 {
-  "name": "aws-env-creator",
+  "name": "@nekonomokochan/aws-env-creator",
   "version": "0.0.1",
   "description": "Create an env file from AWS Secrets Manager.",
   "main": "dist/src/index.js",
