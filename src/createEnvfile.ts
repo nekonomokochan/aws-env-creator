@@ -37,13 +37,9 @@ export const createEnvFile = async (
     await removeFile(outputFile);
   }
 
-  const appendFile = promisify(fs.appendFile);
-
   const secretJson = await fetchSecretJson(secretsManager, params.secretId);
 
-  for (const [key, value] of Object.entries(secretJson)) {
-    await appendFile(outputFile, `${key}=${value}\n`);
-  }
+  await createDotEnv(outputFile, secretJson);
 };
 
 const isAllowedFileType = (type: string): boolean => {
@@ -71,4 +67,15 @@ const removeFile = async (file: string): Promise<void> => {
   const unlink = promisify(fs.unlink);
 
   await unlink(file);
+};
+
+const createDotEnv = async (
+  outputFile: string,
+  secretJson: { [name: string]: any }
+): Promise<void> => {
+  const appendFile = promisify(fs.appendFile);
+
+  for (const [key, value] of Object.entries(secretJson)) {
+    await appendFile(outputFile, `${key}=${value}\n`);
+  }
 };
