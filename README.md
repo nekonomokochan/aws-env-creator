@@ -1,5 +1,6 @@
 # aws-env-creator
 
+[![npm version](https://badge.fury.io/js/%40nekonomokochan%2Faws-env-creator.svg)](https://badge.fury.io/js/%40nekonomokochan%2Faws-env-creator)
 [![Build Status](https://travis-ci.org/nekonomokochan/aws-env-creator.svg?branch=master)](https://travis-ci.org/nekonomokochan/aws-env-creator)
 [![Coverage Status](https://coveralls.io/repos/github/nekonomokochan/aws-env-creator/badge.svg)](https://coveralls.io/github/nekonomokochan/aws-env-creator)
 
