@@ -5,6 +5,7 @@ yarn-debug.log*
 yarn-error.log*
 coverage
 .env
+.envrc
 .idea
 aws-env-creator.iml
 dist/test
@@ -13,4 +14,8 @@ test
 .gitignore
 .github
 .git
-
+.prettierrc
+.travis.yml
+jest.config.json
+tsconfig.json
+tslint.json
