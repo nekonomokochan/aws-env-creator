@@ -8,7 +8,8 @@ import { promisify } from "util";
 import InvalidFileTypeError from "./error/InvalidFileTypeError";
 
 export enum EnvFileType {
-  dotenv = ".env"
+  dotenv = ".env",
+  direnv = ".envrc"
 }
 
 export interface ICreateEnvFileParams
@@ -39,12 +40,21 @@ export const createEnvFile = async (
 
   const secretJson = await fetchSecretJson(secretsManager, params.secretId);
 
-  await createDotEnv(outputFile, secretJson);
+  switch (params.type) {
+    case EnvFileType.dotenv:
+      return await createDotEnv(outputFile, secretJson);
+    case EnvFileType.direnv:
+      return await createEnvrc(outputFile, secretJson);
+    default:
+      return;
+  }
 };
 
 const isAllowedFileType = (type: string): boolean => {
   switch (type) {
     case EnvFileType.dotenv:
+      return true;
+    case EnvFileType.direnv:
       return true;
     default:
       return false;
@@ -77,5 +87,16 @@ const createDotEnv = async (
 
   for (const [key, value] of Object.entries(secretJson)) {
     await appendFile(outputFile, `${key}=${value}\n`);
+  }
+};
+
+const createEnvrc = async (
+  outputFile: string,
+  secretJson: { [name: string]: any }
+): Promise<void> => {
+  const appendFile = promisify(fs.appendFile);
+
+  for (const [key, value] of Object.entries(secretJson)) {
+    await appendFile(outputFile, `export ${key}=${value}\n`);
   }
 };
