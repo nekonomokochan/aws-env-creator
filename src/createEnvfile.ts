@@ -17,6 +17,7 @@ export interface ICreateEnvFileParams
   type: EnvFileType | string;
   outputDir: string;
   secretId: string;
+  keyMapping?: { [name: string]: string };
 }
 
 export const createEnvFile = async (
@@ -42,9 +43,9 @@ export const createEnvFile = async (
 
   switch (params.type) {
     case EnvFileType.dotenv:
-      return await createDotEnv(outputFile, secretJson);
+      return await createDotEnv(outputFile, secretJson, params.keyMapping);
     case EnvFileType.direnv:
-      return await createEnvrc(outputFile, secretJson);
+      return await createEnvrc(outputFile, secretJson, params.keyMapping);
     default:
       return;
   }
@@ -81,22 +82,28 @@ const removeFile = async (file: string): Promise<void> => {
 
 const createDotEnv = async (
   outputFile: string,
-  secretJson: { [name: string]: any }
+  secretJson: { [name: string]: any },
+  keyMapping?: { [name: string]: string }
 ): Promise<void> => {
   const appendFile = promisify(fs.appendFile);
 
   for (const [key, value] of Object.entries(secretJson)) {
-    await appendFile(outputFile, `${key}=${value}\n`);
+    const keyName = keyMapping ? keyMapping[key] : key;
+
+    await appendFile(outputFile, `${keyName}=${value}\n`);
   }
 };
 
 const createEnvrc = async (
   outputFile: string,
-  secretJson: { [name: string]: any }
+  secretJson: { [name: string]: any },
+  keyMapping?: { [name: string]: string }
 ): Promise<void> => {
   const appendFile = promisify(fs.appendFile);
 
   for (const [key, value] of Object.entries(secretJson)) {
-    await appendFile(outputFile, `export ${key}=${value}\n`);
+    const keyName = keyMapping ? keyMapping[key] : key;
+
+    await appendFile(outputFile, `export ${keyName}=${value}\n`);
   }
 };
