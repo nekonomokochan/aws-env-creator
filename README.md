@@ -87,7 +87,7 @@ import { createEnvFile, EnvFileType, AwsRegion } from "@nekonomokochan/aws-env-c
 
 | parameter | description                                          | value       |
 |-----------|------------------------------------------------------|-------------|
-| type      | The type of file to output                           | Enum `.env` |
+| type      | The type of file to output                           | Enum `.env` `.envrc` |
 | outputDir | Output path                                          | String      |
 | secretId  | Your AWS Secrets Manager ID                          | String      |
 | profile   | Your AWS CLI Credentials Name                        | String      |
