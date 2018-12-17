@@ -83,15 +83,52 @@ import { createEnvFile, EnvFileType, AwsRegion } from "@nekonomokochan/aws-env-c
 
 `.env` is created in your current directory.
 
+## Set an environment variable with an arbitrary key name
+
+Assume that the following information is registered in your AWS Secret Manager.
+
+```json
+{
+  "ANOTHER_API_KEY": "another_api_key",
+  "ANOTHER_API_SECRET": "another_api_secret"
+}
+```
+
+When this code is executed, `.envrc` is created with the following contents.
+
+```typescript
+(async () => {
+    const params = {
+      type: EnvFileType.direnv,
+      outputDir: "./",
+      secretId: "dev/app",
+      profile: "nekochans-dev",
+      region: AwsRegion.ap_northeast_1,
+      keyMapping: {
+        ANOTHER_API_KEY: "AWS_API_KEY",
+        ANOTHER_API_SECRET: "AWS_API_SECRET"
+      }
+    };
+
+    await createEnvFile(params);
+})();
+```
+
+```
+export AWS_API_KEY=another_api_key
+export AWS_API_SECRET=another_api_secret
+```
+
 # A description of the parameter
 
-| parameter | description                                          | value       |
-|-----------|------------------------------------------------------|-------------|
-| type      | The type of file to output                           | Enum `.env` `.envrc` |
-| outputDir | Output path                                          | String      |
-| secretId  | Your AWS Secrets Manager ID                          | String      |
-| profile   | Your AWS CLI Credentials Name                        | String      |
-| region    | The region where your AWS Secrets Manager is located | String      |
+| parameter  | description                                          | value                |
+|------------|------------------------------------------------------|----------------------|
+| type       | The type of file to output                           | Enum `.env` `.envrc` |
+| outputDir  | Output path                                          | String               |
+| secretId   | Your AWS Secrets Manager ID                          | String               |
+| profile    | Your AWS CLI Credentials Name                        | String               |
+| region     | The region where your AWS Secrets Manager is located | String               |
+| keyMapping | Key Mapping Object                                   | Object               |
 
 # License
 MIT
