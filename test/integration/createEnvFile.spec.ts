@@ -26,6 +26,30 @@ describe("createEnvFile.integrationTest", () => {
     });
   });
 
+  it("should be able to create a .envrc", async () => {
+    const params = {
+      type: EnvFileType.direnv,
+      outputDir: "./",
+      secretId: "dev/app",
+      profile: "nekochans-dev",
+      region: AwsRegion.ap_northeast_1
+    };
+
+    await createEnvFile(params);
+
+    const stream = fs.createReadStream("./.envrc");
+    const reader = readline.createInterface({ input: stream });
+
+    const expected = [
+      "export API_KEY=My API Key",
+      "export API_SECRET=My API Secret"
+    ];
+
+    reader.on("line", (data: string) => {
+      expect(expected.includes(data)).toBeTruthy();
+    });
+  });
+
   it("will be InvalidFileTypeError", async () => {
     const params = {
       type: "unknown",
