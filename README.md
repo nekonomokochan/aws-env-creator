@@ -50,7 +50,7 @@ import { createEnvFile, EnvFileType, AwsRegion } from "@nekonomokochan/aws-env-c
   const params = {
     type: EnvFileType.dotenv,
     outputDir: "./",
-    secretId: "dev/app",
+    secretIds: ["dev/app"],
     profile: "nekochans-dev",
     region: AwsRegion.ap_northeast_1
   };
@@ -72,7 +72,7 @@ import { createEnvFile, EnvFileType, AwsRegion } from "@nekonomokochan/aws-env-c
   const params = {
     type: ".env",
     outputDir: "./",
-    secretId: "dev/app",
+    secretIds: ["dev/app"],
     profile: "nekochans-dev",
     region: "ap-northeast-1"
   };
@@ -101,7 +101,7 @@ When this code is executed, `.envrc` is created with the following contents.
     const params = {
       type: EnvFileType.direnv,
       outputDir: "./",
-      secretId: "dev/app",
+      secretIds: ["dev/app"],
       profile: "nekochans-dev",
       region: AwsRegion.ap_northeast_1,
       keyMapping: {
@@ -125,7 +125,7 @@ export AWS_API_SECRET=another_api_secret
 |------------|------------------------------------------------------|----------------------|
 | type       | The type of file to output                           | Enum `.env` `.envrc` |
 | outputDir  | Output path                                          | String               |
-| secretId   | Your AWS Secrets Manager ID                          | String               |
+| secretIds  | Your AWS Secrets Manager ID                          | String[]             |
 | profile    | Your AWS CLI Credentials Name                        | String               |
 | region     | The region where your AWS Secrets Manager is located | String               |
 | keyMapping | Key Mapping Object                                   | Object               |
