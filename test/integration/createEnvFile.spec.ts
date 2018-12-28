@@ -9,7 +9,7 @@ describe("createEnvFile.integrationTest", () => {
     const params = {
       type: EnvFileType.dotenv,
       outputDir: "./",
-      secretId: "dev/app",
+      secretIds: ["dev/app"],
       profile: "nekochans-dev",
       region: AwsRegion.ap_northeast_1
     };
@@ -30,7 +30,7 @@ describe("createEnvFile.integrationTest", () => {
     const params = {
       type: EnvFileType.direnv,
       outputDir: "./",
-      secretId: "dev/app",
+      secretIds: ["dev/app"],
       profile: "nekochans-dev",
       region: AwsRegion.ap_northeast_1
     };
@@ -50,11 +50,75 @@ describe("createEnvFile.integrationTest", () => {
     });
   });
 
+  it("can create .env with multiple secretId", async () => {
+    const params = {
+      type: EnvFileType.dotenv,
+      outputDir: "./",
+      secretIds: ["dev/app", "dev/db"],
+      profile: "nekochans-dev",
+      region: AwsRegion.ap_northeast_1,
+      keyMapping: {
+        API_KEY: "AWS_API_KEY",
+        API_SECRET: "AWS_API_SECRET",
+        DB_USER: "ADMIN_DB_USER",
+        DB_PASSWORD: "ADMIN_DB_PASSWORD"
+      }
+    };
+
+    await createEnvFile(params);
+
+    const stream = fs.createReadStream("./.env");
+    const reader = readline.createInterface({ input: stream });
+
+    const expected = [
+      "AWS_API_KEY=My API Key",
+      "AWS_API_SECRET=My API Secret",
+      "ADMIN_DB_USER=admin",
+      "ADMIN_DB_PASSWORD=AdminPassword"
+    ];
+
+    reader.on("line", (data: string) => {
+      expect(expected.includes(data)).toBeTruthy();
+    });
+  });
+
+  it("can create .envrc with multiple secretId", async () => {
+    const params = {
+      type: EnvFileType.direnv,
+      outputDir: "./",
+      secretIds: ["dev/app", "dev/db"],
+      profile: "nekochans-dev",
+      region: AwsRegion.ap_northeast_1,
+      keyMapping: {
+        API_KEY: "AWS_API_KEY",
+        API_SECRET: "AWS_API_SECRET",
+        DB_USER: "ADMIN_DB_USER",
+        DB_PASSWORD: "ADMIN_DB_PASSWORD"
+      }
+    };
+
+    await createEnvFile(params);
+
+    const stream = fs.createReadStream("./.envrc");
+    const reader = readline.createInterface({ input: stream });
+
+    const expected = [
+      "export AWS_API_KEY=My API Key",
+      "export AWS_API_SECRET=My API Secret",
+      "export ADMIN_DB_USER=admin",
+      "export ADMIN_DB_PASSWORD=AdminPassword"
+    ];
+
+    reader.on("line", (data: string) => {
+      expect(expected.includes(data)).toBeTruthy();
+    });
+  });
+
   it("will be InvalidFileTypeError", async () => {
     const params = {
       type: "unknown",
       outputDir: "./",
-      secretId: "dev/app",
+      secretIds: ["dev/app"],
       profile: "nekochans-dev",
       region: AwsRegion.ap_northeast_1
     };
