@@ -31,7 +31,7 @@ describe("createEnvFile.unitTest", () => {
     const params = {
       type: EnvFileType.dotenv,
       outputDir: "./",
-      secretId: "dev/app",
+      secretIds: ["dev/app"],
       profile: "nekochans-dev",
       region: AwsRegion.ap_northeast_1
     };
@@ -68,7 +68,7 @@ describe("createEnvFile.unitTest", () => {
     const params = {
       type: EnvFileType.direnv,
       outputDir: "./",
-      secretId: "dev/app",
+      secretIds: ["dev/app"],
       profile: "nekochans-dev",
       region: AwsRegion.ap_northeast_1
     };
@@ -105,7 +105,7 @@ describe("createEnvFile.unitTest", () => {
     const params = {
       type: EnvFileType.dotenv,
       outputDir: "./",
-      secretId: "dev/app",
+      secretIds: ["dev/app"],
       profile: "nekochans-dev",
       region: AwsRegion.ap_northeast_1,
       keyMapping: {
@@ -147,7 +147,7 @@ describe("createEnvFile.unitTest", () => {
     const params = {
       type: EnvFileType.direnv,
       outputDir: "./",
-      secretId: "dev/app",
+      secretIds: ["dev/app"],
       profile: "nekochans-dev",
       region: AwsRegion.ap_northeast_1,
       keyMapping: {
@@ -177,7 +177,7 @@ describe("createEnvFile.unitTest", () => {
     const params = {
       type: "unknown",
       outputDir: "./",
-      secretId: "dev/app",
+      secretIds: ["dev/app"],
       profile: "nekochans-dev",
       region: AwsRegion.ap_northeast_1
     };
