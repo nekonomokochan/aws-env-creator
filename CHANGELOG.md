@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0 2018-12-30
+
+Feature
+
+- https://github.com/nekonomokochan/aws-env-creator/issues/18
+- https://github.com/nekonomokochan/aws-env-creator/issues/19
+
 ## 0.1.0 2018-12-17
 
 Feature
