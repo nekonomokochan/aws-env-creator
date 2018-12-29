@@ -33,19 +33,19 @@
   "homepage": "https://github.com/nekonomokochan/aws-env-creator#readme",
   "devDependencies": {
     "@types/jest": "^23.3.10",
-    "@types/node": "^10.12.12",
+    "@types/node": "^10.12.18",
     "aws-sdk-mock": "^4.3.0",
     "coveralls": "^3.0.2",
     "jest": "^23.6.0",
     "prettier": "^1.15.3",
     "ts-jest": "^23.10.5",
-    "tslint": "^5.11.0",
+    "tslint": "^5.12.0",
     "tslint-config-airbnb": "^5.11.1",
     "tslint-config-prettier": "^1.17.0",
     "tslint-plugin-prettier": "^2.0.1",
     "typescript": "^3.2.1"
   },
   "dependencies": {
-    "aws-sdk": "^2.370.0"
+    "aws-sdk": "^2.382.0"
   }
 }
