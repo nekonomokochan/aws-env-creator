@@ -33,7 +33,8 @@ describe("createEnvFile.unitTest", () => {
       outputDir: "./",
       secretIds: ["dev/app"],
       profile: "nekochans-dev",
-      region: AwsRegion.ap_northeast_1
+      region: AwsRegion.ap_northeast_1,
+      addParams: { APP_URL: "http://localhost/3000" }
     };
 
     await createEnvFile(params);
@@ -44,7 +45,8 @@ describe("createEnvFile.unitTest", () => {
     const expected = [
       "SECRET_ID=dev/app",
       "ANOTHER_API_KEY=another_api_key",
-      "ANOTHER_API_SECRET=another_api_secret"
+      "ANOTHER_API_SECRET=another_api_secret",
+      "APP_URL=http://localhost/3000"
     ];
 
     reader.on("line", (data: string) => {
@@ -70,7 +72,8 @@ describe("createEnvFile.unitTest", () => {
       outputDir: "./",
       secretIds: ["dev/app"],
       profile: "nekochans-dev",
-      region: AwsRegion.ap_northeast_1
+      region: AwsRegion.ap_northeast_1,
+      addParams: { APP_URL: "http://localhost/3000" }
     };
 
     await createEnvFile(params);
@@ -81,7 +84,8 @@ describe("createEnvFile.unitTest", () => {
     const expected = [
       "export SECRET_ID=dev/app",
       "export ANOTHER_API_KEY=another_api_key",
-      "export ANOTHER_API_SECRET=another_api_secret"
+      "export ANOTHER_API_SECRET=another_api_secret",
+      "export APP_URL=http://localhost/3000"
     ];
 
     reader.on("line", (data: string) => {

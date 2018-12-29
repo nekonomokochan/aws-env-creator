@@ -119,6 +119,58 @@ export AWS_API_KEY=another_api_key
 export AWS_API_SECRET=another_api_secret
 ```
 
+## Optionally set optional parameters
+
+### Use With TypeScript
+
+```typescript
+import { createEnvFile, EnvFileType, AwsRegion } from "@nekonomokochan/aws-env-creator";
+
+(async () => {
+  const params = {
+    type: EnvFileType.dotenv,
+    outputDir: "./",
+    secretIds: ["dev/app"],
+    profile: "nekochans-dev",
+    region: AwsRegion.ap_northeast_1,
+    addParams: { APP_URL: "http://localhost/3000" }
+  };
+
+  await createEnvFile(params);
+})();
+```
+
+### Use With JavaScript
+
+```javascript
+(async () => {
+  "use strict";
+
+  const awsEnvCreator = require("@nekonomokochan/aws-env-creator");
+
+  const params = {
+    type: ".env",
+    outputDir: "./",
+    secretIds: ["dev/app"],
+    profile: "nekochans-dev",
+    region: "ap-northeast-1",
+    addParams: { APP_URL: "http://localhost/3000" }
+  };
+
+  await awsEnvCreator.createEnvFile(params);
+})();
+```
+
+The following file will be output.
+
+```json
+{
+  "ANOTHER_API_KEY": "another_api_key",
+  "ANOTHER_API_SECRET": "another_api_secret",
+  "APP_URL": "http://localhost/3000"
+}
+```
+
 # A description of the parameter
 
 | parameter  | description                                          | value                |
@@ -129,6 +181,7 @@ export AWS_API_SECRET=another_api_secret
 | profile    | Your AWS CLI Credentials Name                        | String               |
 | region     | The region where your AWS Secrets Manager is located | String               |
 | keyMapping | Key Mapping Object                                   | Object               |
+| addParams  | Additional Parameters                                | Object               |
 
 # License
 MIT
