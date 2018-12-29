@@ -18,6 +18,7 @@ export interface ICreateEnvFileParams
   outputDir: string;
   secretIds: string[];
   keyMapping?: { [name: string]: string };
+  addParams?: { [name: string]: string | number };
 }
 
 export const createEnvFile = async (
@@ -45,11 +46,16 @@ export const createEnvFile = async (
     })
   );
 
+  const outputParams =
+    params.addParams === undefined
+      ? secretJsons
+      : secretJsons.concat([params.addParams]);
+
   switch (params.type) {
     case EnvFileType.dotenv:
-      return await createDotEnv(outputFile, secretJsons, params.keyMapping);
+      return await createDotEnv(outputFile, outputParams, params.keyMapping);
     case EnvFileType.direnv:
-      return await createEnvrc(outputFile, secretJsons, params.keyMapping);
+      return await createEnvrc(outputFile, outputParams, params.keyMapping);
     default:
       return;
   }
@@ -86,14 +92,14 @@ const removeFile = async (file: string): Promise<void> => {
 
 const createDotEnv = async (
   outputFile: string,
-  secretJsons: { [name: string]: any }[] | any,
+  outputParams: { [name: string]: any }[] | any,
   keyMapping?: { [name: string]: string }
 ): Promise<any> => {
   const appendFile = promisify(fs.appendFile);
 
   return await Promise.all(
-    secretJsons.map(async (secretJson: { [name: string]: any }) => {
-      for (const [key, value] of Object.entries(secretJson)) {
+    outputParams.map(async (outputParam: { [name: string]: any }) => {
+      for (const [key, value] of Object.entries(outputParam)) {
         const keyName = keyMapping ? keyMapping[key] : key;
 
         await appendFile(outputFile, `${keyName}=${value}\n`);
@@ -104,14 +110,14 @@ const createDotEnv = async (
 
 const createEnvrc = async (
   outputFile: string,
-  secretJsons: { [name: string]: any }[] | any,
+  outputParams: { [name: string]: any }[] | any,
   keyMapping?: { [name: string]: string }
 ): Promise<any> => {
   const appendFile = promisify(fs.appendFile);
 
   return await Promise.all<any>(
-    secretJsons.map(async (secretJson: { [name: string]: any }) => {
-      for (const [key, value] of Object.entries(secretJson)) {
+    outputParams.map(async (outputParam: { [name: string]: any }) => {
+      for (const [key, value] of Object.entries(outputParam)) {
         const keyName = keyMapping ? keyMapping[key] : key;
 
         await appendFile(outputFile, `export ${keyName}=${value}\n`);
