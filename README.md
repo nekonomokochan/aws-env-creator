@@ -119,6 +119,29 @@ export AWS_API_KEY=another_api_key
 export AWS_API_SECRET=another_api_secret
 ```
 
+## Define the environment variable to output
+
+When this code is executed, `.envrc` is created with the following contents.
+
+```typescript
+(async () => {
+    const params = {
+      type: EnvFileType.direnv,
+      outputDir: "./",
+      secretIds: ["dev/app"],
+      profile: "nekochans-dev",
+      region: AwsRegion.ap_northeast_1,
+      outputWhitelist: ["ANOTHER_API_KEY"],
+    };
+
+    await createEnvFile(params);
+})();
+```
+
+```
+export ANOTHER_API_KEY=another_api_key
+```
+
 ## Optionally set optional parameters
 
 ### Use With TypeScript
@@ -173,15 +196,16 @@ The following file will be output.
 
 # A description of the parameter
 
-| parameter  | description                                          | value                |
-|------------|------------------------------------------------------|----------------------|
-| type       | The type of file to output                           | Enum `.env` `.envrc` |
-| outputDir  | Output path                                          | String               |
-| secretIds  | Your AWS Secrets Manager ID                          | String[]             |
-| profile    | Your AWS CLI Credentials Name                        | String               |
-| region     | The region where your AWS Secrets Manager is located | String               |
-| keyMapping | Key Mapping Object                                   | Object               |
-| addParams  | Additional Parameters                                | Object               |
+| parameter       | description                                          | value                |
+|-----------------|------------------------------------------------------|----------------------|
+| type            | The type of file to output                           | Enum `.env` `.envrc` |
+| outputDir       | Output path                                          | String               |
+| secretIds       | Your AWS Secrets Manager ID                          | String[]             |
+| profile         | Your AWS CLI Credentials Name                        | String               |
+| region          | The region where your AWS Secrets Manager is located | String               |
+| outputWhitelist | Output Parameters                                    | String[]             |
+| keyMapping      | Key Mapping Object                                   | Object               |
+| addParams       | Additional Parameters                                | Object               |
 
 # License
 MIT
