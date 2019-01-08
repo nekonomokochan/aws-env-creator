@@ -47,25 +47,15 @@ export const createEnvFile = async (
     })
   );
 
-  let outputSecret: { [key: string]: string } | any = [];
-
-  secretJsons.map(
-    (secret: { [name: string]: any }): { [key: string]: string } | any => {
-      if (params.outputWhitelist) {
-        const outputWhitelist = params.outputWhitelist;
-        outputSecret = Object.entries(secret).filter(
-          ([key]): boolean => outputWhitelist.indexOf(key) > -1
-        );
-      } else {
-        outputSecret = Object.entries(secret);
-      }
-    }
+  const outputSecret = createSecretJsonsIncludedInWhitelist(
+    secretJsons,
+    params.outputWhitelist
   );
 
   const outputParams =
     params.addParams === undefined
       ? outputSecret
-      : outputSecret.concat(Object.entries(params.addParams));
+      : outputSecret.concat([params.addParams]);
 
   switch (params.type) {
     case EnvFileType.dotenv:
@@ -106,36 +96,60 @@ const removeFile = async (file: string): Promise<void> => {
   await unlink(file);
 };
 
+const createSecretJsonsIncludedInWhitelist = (
+  secretJsons: { [name: string]: any }[],
+  outputWhitelist?: string[]
+): { [name: string]: any }[] => {
+  if (outputWhitelist === undefined) {
+    return secretJsons;
+  }
+
+  return secretJsons.map((secretJson: { [name: string]: any }) => {
+    let whitelistJson = {};
+    for (const key of Object.keys(secretJson)) {
+      if (outputWhitelist.includes(key)) {
+        whitelistJson = Object.assign(
+          { [key]: secretJson[key] },
+          whitelistJson
+        );
+      }
+    }
+    return whitelistJson;
+  });
+};
+
 const createDotEnv = async (
   outputFile: string,
-  outputParams: string[],
-  keyMapping?: { [key: string]: string }
+  outputParams: { [name: string]: any }[] | any,
+  keyMapping?: { [name: string]: string }
 ): Promise<any> => {
   const appendFile = promisify(fs.appendFile);
 
   return await Promise.all(
-    outputParams.map(async (outputParam: any) => {
-      const key = outputParam[0];
-      const keyName = keyMapping && keyMapping[key] ? keyMapping[key] : key;
+    outputParams.map(async (outputParam: { [name: string]: any }) => {
+      for (const [key, value] of Object.entries(outputParam)) {
+        const keyName = keyMapping && keyMapping[key] ? keyMapping[key] : key;
 
-      await appendFile(outputFile, `${keyName}=${outputParam[1]}\n`);
+        await appendFile(outputFile, `${keyName}=${value}\n`);
+      }
     })
   );
 };
 
 const createEnvrc = async (
   outputFile: string,
-  outputParams: string[],
-  keyMapping?: { [key: string]: string }
+  outputParams: { [name: string]: any }[] | any,
+  keyMapping?: { [name: string]: string }
 ): Promise<any> => {
   const appendFile = promisify(fs.appendFile);
 
   return await Promise.all<any>(
-    outputParams.map(async (outputParam: any) => {
-      const key = outputParam[0];
-      const keyName = keyMapping && keyMapping[key] ? keyMapping[key] : key;
+    outputParams.map(async (outputParam: { [name: string]: any }) => {
+      for (const [key, value] of Object.entries(outputParam)) {
+        const keyName = keyMapping && keyMapping[key] ? keyMapping[key] : key;
 
-      await appendFile(outputFile, `export ${keyName}=${outputParam[1]}\n`);
+        await appendFile(outputFile, `export ${keyName}=${value}\n`);
+      }
     })
   );
 };
