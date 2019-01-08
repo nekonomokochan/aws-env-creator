@@ -114,6 +114,72 @@ describe("createEnvFile.integrationTest", () => {
     });
   });
 
+  it("should be able to create a .env with outputWhitelist", async () => {
+    const params = {
+      type: EnvFileType.dotenv,
+      outputDir: "./",
+      secretIds: ["stg/app"],
+      profile: "nekochans-dev",
+      region: AwsRegion.ap_northeast_1,
+      outputWhitelist: ["BACKEND_URL", "QIITA_REDIRECT_URI"],
+      keyMapping: {
+        BACKEND_URL: "VUE_APP_API_URL_BASE",
+        QIITA_REDIRECT_URI: "VUE_APP_QIITA_REDIRECT_URI"
+      },
+      addParams: {
+        VUE_APP_STAGE: "stg"
+      }
+    };
+
+    await createEnvFile(params);
+
+    const stream = fs.createReadStream("./.env");
+    const reader = readline.createInterface({ input: stream });
+
+    const expected = [
+      "VUE_APP_STAGE=stg",
+      "VUE_APP_API_URL_BASE=https://stg-api.sample.net",
+      "VUE_APP_QIITA_REDIRECT_URI=https://stg-www.sample.net/oauth/callback"
+    ];
+
+    reader.on("line", (data: string) => {
+      expect(expected.includes(data)).toBeTruthy();
+    });
+  });
+
+  it("should be able to create a .envrc with outputWhitelist", async () => {
+    const params = {
+      type: EnvFileType.direnv,
+      outputDir: "./",
+      secretIds: ["stg/app"],
+      profile: "nekochans-dev",
+      region: AwsRegion.ap_northeast_1,
+      outputWhitelist: ["BACKEND_URL", "QIITA_REDIRECT_URI"],
+      keyMapping: {
+        BACKEND_URL: "VUE_APP_API_URL_BASE",
+        QIITA_REDIRECT_URI: "VUE_APP_QIITA_REDIRECT_URI"
+      },
+      addParams: {
+        VUE_APP_STAGE: "stg"
+      }
+    };
+
+    await createEnvFile(params);
+
+    const stream = fs.createReadStream("./.envrc");
+    const reader = readline.createInterface({ input: stream });
+
+    const expected = [
+      "export VUE_APP_STAGE=stg",
+      "export VUE_APP_API_URL_BASE=https://stg-api.sample.net",
+      "export VUE_APP_QIITA_REDIRECT_URI=https://stg-www.sample.net/oauth/callback"
+    ];
+
+    reader.on("line", (data: string) => {
+      expect(expected.includes(data)).toBeTruthy();
+    });
+  });
+
   it("will be InvalidFileTypeError", async () => {
     const params = {
       type: "unknown",

@@ -177,6 +177,84 @@ describe("createEnvFile.unitTest", () => {
     });
   });
 
+  it("should be able to create a .env with outputWhitelist", async () => {
+    const mockResponse = (params: { SecretId: string }, callback: any) => {
+      callback(null, {
+        SecretString: JSON.stringify({
+          SECRET_ID: params.SecretId,
+          ANOTHER_API_KEY: "another_api_key",
+          ANOTHER_API_SECRET: "another_api_secret"
+        })
+      });
+    };
+
+    AWS.mock("SecretsManager", "getSecretValue", mockResponse);
+
+    const params = {
+      type: EnvFileType.dotenv,
+      outputDir: "./",
+      secretIds: ["dev/app"],
+      profile: "nekochans-dev",
+      region: AwsRegion.ap_northeast_1,
+      outputWhitelist: ["SECRET_ID", "ANOTHER_API_KEY"],
+      addParams: { APP_URL: "http://localhost/3000" }
+    };
+
+    await createEnvFile(params);
+
+    const stream = fs.createReadStream("./.env");
+    const reader = readline.createInterface({ input: stream });
+
+    const expected = [
+      "SECRET_ID=dev/app",
+      "ANOTHER_API_KEY=another_api_key",
+      "APP_URL=http://localhost/3000"
+    ];
+
+    reader.on("line", (data: string) => {
+      expect(expected.includes(data)).toBeTruthy();
+    });
+  });
+
+  it("should be able to create a .envrc with outputWhitelist", async () => {
+    const mockResponse = (params: { SecretId: string }, callback: any) => {
+      callback(null, {
+        SecretString: JSON.stringify({
+          SECRET_ID: params.SecretId,
+          ANOTHER_API_KEY: "another_api_key",
+          ANOTHER_API_SECRET: "another_api_secret"
+        })
+      });
+    };
+
+    AWS.mock("SecretsManager", "getSecretValue", mockResponse);
+
+    const params = {
+      type: EnvFileType.direnv,
+      outputDir: "./",
+      secretIds: ["dev/app"],
+      profile: "nekochans-dev",
+      region: AwsRegion.ap_northeast_1,
+      outputWhitelist: ["SECRET_ID", "ANOTHER_API_KEY"],
+      addParams: { APP_URL: "http://localhost/3000" }
+    };
+
+    await createEnvFile(params);
+
+    const stream = fs.createReadStream("./.envrc");
+    const reader = readline.createInterface({ input: stream });
+
+    const expected = [
+      "export SECRET_ID=dev/app",
+      "export ANOTHER_API_KEY=another_api_key",
+      "export APP_URL=http://localhost/3000"
+    ];
+
+    reader.on("line", (data: string) => {
+      expect(expected.includes(data)).toBeTruthy();
+    });
+  });
+
   it("will be InvalidFileTypeError", async () => {
     const params = {
       type: "unknown",
