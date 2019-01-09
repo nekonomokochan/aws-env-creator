@@ -9,7 +9,8 @@ import InvalidFileTypeError from "./error/InvalidFileTypeError";
 
 export enum EnvFileType {
   dotenv = ".env",
-  direnv = ".envrc"
+  direnv = ".envrc",
+  terraform = "terraform.tfvars"
 }
 
 export interface ICreateEnvFileParams
@@ -62,6 +63,8 @@ export const createEnvFile = async (
       return await createDotEnv(outputFile, outputParams, params.keyMapping);
     case EnvFileType.direnv:
       return await createEnvrc(outputFile, outputParams, params.keyMapping);
+    case EnvFileType.terraform:
+      return await createTfvars(outputFile, outputParams, params.keyMapping);
     default:
       return;
   }
@@ -72,6 +75,8 @@ const isAllowedFileType = (type: string): boolean => {
     case EnvFileType.dotenv:
       return true;
     case EnvFileType.direnv:
+      return true;
+    case EnvFileType.terraform:
       return true;
     default:
       return false;
@@ -149,6 +154,24 @@ const createEnvrc = async (
         const keyName = keyMapping && keyMapping[key] ? keyMapping[key] : key;
 
         await appendFile(outputFile, `export ${keyName}=${value}\n`);
+      }
+    })
+  );
+};
+
+const createTfvars = async (
+  outputFile: string,
+  outputParams: { [name: string]: any }[] | any,
+  keyMapping?: { [name: string]: string }
+): Promise<any> => {
+  const appendFile = promisify(fs.appendFile);
+
+  return await Promise.all<any>(
+    outputParams.map(async (outputParam: { [name: string]: any }) => {
+      for (const [key, value] of Object.entries(outputParam)) {
+        const keyName = keyMapping && keyMapping[key] ? keyMapping[key] : key;
+
+        await appendFile(outputFile, `${keyName} = "${value}"\n`);
       }
     })
   );

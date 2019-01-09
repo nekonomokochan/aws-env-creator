@@ -60,6 +60,9 @@ typings/
 # direnv variables file
 .envrc
 
+# terraform variables file
+terraform.tfvars
+
 # next.js build output
 .next
 

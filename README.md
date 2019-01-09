@@ -196,16 +196,16 @@ The following file will be output.
 
 # A description of the parameter
 
-| parameter       | description                                          | value                |
-|-----------------|------------------------------------------------------|----------------------|
-| type            | The type of file to output                           | Enum `.env` `.envrc` |
-| outputDir       | Output path                                          | String               |
-| secretIds       | Your AWS Secrets Manager ID                          | String[]             |
-| profile         | Your AWS CLI Credentials Name                        | String               |
-| region          | The region where your AWS Secrets Manager is located | String               |
-| outputWhitelist | Output Parameters                                    | String[]             |
-| keyMapping      | Key Mapping Object                                   | Object               |
-| addParams       | Additional Parameters                                | Object               |
+| parameter       | description                                          | value                                   |
+|-----------------|------------------------------------------------------|-----------------------------------------|
+| type            | The type of file to output                           | Enum `.env` `.envrc` `terraform.tfvars` |
+| outputDir       | Output path                                          | String                                  |
+| secretIds       | Your AWS Secrets Manager ID                          | String[]                                |
+| profile         | Your AWS CLI Credentials Name                        | String                                  |
+| region          | The region where your AWS Secrets Manager is located | String                                  |
+| outputWhitelist | Output Parameters                                    | String[]                                |
+| keyMapping      | Key Mapping Object                                   | Object                                  |
+| addParams       | Additional Parameters                                | Object                                  |
 
 # License
 MIT
