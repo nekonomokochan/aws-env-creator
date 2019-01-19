@@ -56,12 +56,15 @@ typings/
 
 # dotenv environment variables file
 .env
+.env.*
 
 # direnv variables file
 .envrc
+.envrc.*
 
 # terraform variables file
 terraform.tfvars
+terraform.tfvars.*
 
 # next.js build output
 .next
