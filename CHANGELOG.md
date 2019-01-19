@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0 2019-01-19
+
+Feature
+
+- [Make the name of the file to be output specified as argument](https://github.com/nekonomokochan/aws-env-creator/pull/34)
+
 ## 1.1.0 2019-01-09
 
 Feature
