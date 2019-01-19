@@ -21,6 +21,7 @@ export interface ICreateEnvFileParams
   outputWhitelist?: string[];
   keyMapping?: { [name: string]: string };
   addParams?: { [name: string]: string | number };
+  outputFilename?: string;
 }
 
 export const createEnvFile = async (
@@ -35,7 +36,7 @@ export const createEnvFile = async (
     profile: params.profile
   });
 
-  const outputFile = `${params.outputDir}${params.type}`;
+  const outputFile = outputFilenameIncludedPath(params);
 
   const exists = await targetFileExists(outputFile);
   if (exists) {
@@ -81,6 +82,16 @@ const isAllowedFileType = (type: string): boolean => {
     default:
       return false;
   }
+};
+
+const outputFilenameIncludedPath = ({
+  type,
+  outputDir,
+  outputFilename
+}: ICreateEnvFileParams): string => {
+  return outputFilename === undefined
+    ? `${outputDir}${type}`
+    : `${outputDir}${outputFilename}`;
 };
 
 const targetFileExists = async (file: string): Promise<boolean> => {

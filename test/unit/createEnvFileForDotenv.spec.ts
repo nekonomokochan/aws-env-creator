@@ -135,6 +135,46 @@ describe("createEnvFile.unitTest", () => {
     });
   });
 
+  it("should be able to create a .env with outputFilename", async () => {
+    const mockResponse = (params: { SecretId: string }, callback: any) => {
+      callback(null, {
+        SecretString: JSON.stringify({
+          SECRET_ID: params.SecretId,
+          ANOTHER_API_KEY: "another_api_key",
+          ANOTHER_API_SECRET: "another_api_secret"
+        })
+      });
+    };
+
+    AWS.mock("SecretsManager", "getSecretValue", mockResponse);
+
+    const params = {
+      type: EnvFileType.dotenv,
+      outputDir: "./",
+      secretIds: ["dev/app"],
+      profile: "nekochans-dev",
+      region: AwsRegion.ap_northeast_1,
+      addParams: { APP_URL: "http://localhost/3000" },
+      outputFilename: ".env.example"
+    };
+
+    await createEnvFile(params);
+
+    const stream = fs.createReadStream("./.env.example");
+    const reader = readline.createInterface({ input: stream });
+
+    const expected = [
+      "SECRET_ID=dev/app",
+      "ANOTHER_API_KEY=another_api_key",
+      "ANOTHER_API_SECRET=another_api_secret",
+      "APP_URL=http://localhost/3000"
+    ];
+
+    reader.on("line", (data: string) => {
+      expect(expected.includes(data)).toBeTruthy();
+    });
+  });
+
   it("will be InvalidFileTypeError", async () => {
     const params = {
       type: "unknown",

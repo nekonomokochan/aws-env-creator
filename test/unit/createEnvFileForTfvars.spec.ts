@@ -133,4 +133,44 @@ describe("createTfvars.unitTest", () => {
       expect(expected.includes(data)).toBeTruthy();
     });
   });
+
+  it("should be able to create a terraform.tfvars with outputFilename", async () => {
+    const mockResponse = (params: { SecretId: string }, callback: any) => {
+      callback(null, {
+        SecretString: JSON.stringify({
+          SECRET_ID: params.SecretId,
+          ANOTHER_API_KEY: "another_api_key",
+          ANOTHER_API_SECRET: "another_api_secret"
+        })
+      });
+    };
+
+    AWS.mock("SecretsManager", "getSecretValue", mockResponse);
+
+    const params = {
+      type: EnvFileType.terraform,
+      outputDir: "./",
+      secretIds: ["dev/app"],
+      profile: "nekochans-dev",
+      region: AwsRegion.ap_northeast_1,
+      addParams: { APP_URL: "http://localhost/3000" },
+      outputFilename: "terraform.tfvars.example"
+    };
+
+    await createEnvFile(params);
+
+    const stream = fs.createReadStream("./terraform.tfvars.example");
+    const reader = readline.createInterface({ input: stream });
+
+    const expected = [
+      'SECRET_ID = "dev/app"',
+      'ANOTHER_API_KEY = "another_api_key"',
+      'ANOTHER_API_SECRET = "another_api_secret"',
+      'APP_URL = "http://localhost/3000"'
+    ];
+
+    reader.on("line", (data: string) => {
+      expect(expected.includes(data)).toBeTruthy();
+    });
+  });
 });
