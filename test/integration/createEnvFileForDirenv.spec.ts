@@ -94,7 +94,7 @@ describe("createEnvFile.integrationTest", () => {
     });
   });
 
-  it.only("should be able to create a .envrc with outputFilename", async () => {
+  it("should be able to create a .envrc with outputFilename", async () => {
     const params = {
       type: EnvFileType.direnv,
       outputDir: "./",

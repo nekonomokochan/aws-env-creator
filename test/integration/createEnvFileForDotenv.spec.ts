@@ -91,7 +91,7 @@ describe("createEnvFile.integrationTest", () => {
     });
   });
 
-  it.only("should be able to create a .env with outputFilename", async () => {
+  it("should be able to create a .env with outputFilename", async () => {
     const params = {
       type: EnvFileType.dotenv,
       outputDir: "./",
