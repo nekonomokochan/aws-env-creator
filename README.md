@@ -206,6 +206,9 @@ The following file will be output.
 | outputWhitelist | Output Parameters                                    | String[]                                |
 | keyMapping      | Key Mapping Object                                   | Object                                  |
 | addParams       | Additional Parameters                                | Object                                  |
+| outputFilename  | Use this when you want to change the output file name| String                                  |
+
+Use this when you want to change the output file name
 
 # License
 MIT
