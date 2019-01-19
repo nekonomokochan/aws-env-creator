@@ -5,7 +5,11 @@ yarn-debug.log*
 yarn-error.log*
 coverage
 .env
+.env.*
 .envrc
+.envrc.*
+terraform.tfvars
+terraform.tfvars.*
 .idea
 aws-env-creator.iml
 dist/test
