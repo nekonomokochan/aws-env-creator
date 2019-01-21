@@ -32,12 +32,21 @@ Default region name [None]: ap-northeast-1
 Default output format [None]: json
 ```
 
-- Be sure to set the profile name.
-- The access key must also have at least the following permissions.
-  - `secretsmanager:ListSecrets`
-  - `secretsmanager:DescribeSecret`
-  - `secretsmanager:GetSecretValue`
-  - `kms:Decrypt`
+`profile` is optional parameter.
+
+However, in that case please make sure that AWS-SDK can access SecretManager by some means.
+
+For example, there are the following methods.
+
+- Set credentials for default profile.
+- Give access to SecretManager with IAM policy.
+
+The access key must also have at least the following permissions.
+
+- `secretsmanager:ListSecrets`
+- `secretsmanager:DescribeSecret`
+- `secretsmanager:GetSecretValue`
+- `kms:Decrypt`
 
 # How To Use
 
