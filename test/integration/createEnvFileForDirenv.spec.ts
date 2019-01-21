@@ -128,6 +128,31 @@ describe("createEnvFile.integrationTest", () => {
     });
   });
 
+  it("should be able to create a .envrc without profile", async () => {
+    // In order to make this test successful,
+    // the same credentials as nekochans-dev must be set in the default profile of aws
+    const params = {
+      type: EnvFileType.direnv,
+      outputDir: "./",
+      secretIds: ["dev/app"],
+      region: AwsRegion.ap_northeast_1
+    };
+
+    await createEnvFile(params);
+
+    const stream = fs.createReadStream("./.envrc");
+    const reader = readline.createInterface({ input: stream });
+
+    const expected = [
+      "export API_KEY=My API Key",
+      "export API_SECRET=My API Secret"
+    ];
+
+    reader.on("line", (data: string) => {
+      expect(expected.includes(data)).toBeTruthy();
+    });
+  });
+
   it("will be InvalidFileTypeError", async () => {
     const params = {
       type: "unknown",
