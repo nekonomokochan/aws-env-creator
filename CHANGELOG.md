@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.0 2019-01-21
+
+Feature
+
+- [Change profile to optional parameter](https://github.com/nekonomokochan/aws-env-creator/pull/38)
+
 ## 1.2.0 2019-01-19
 
 Feature
