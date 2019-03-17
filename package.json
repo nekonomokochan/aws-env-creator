@@ -11,8 +11,8 @@
     "test:unit:coverage": "yarn run test:coverage test/unit/",
     "test:integration": "yarn run test test/integration/",
     "test:integration:coverage": "yarn run test:coverage test/integration/",
-    "tslint": "tslint --project tsconfig.json --config tslint.json 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}'",
-    "format": "tslint --project tsconfig.json --config tslint.json --fix 'src/**/*.{ts,tsx}' 'test/**/*.{ts,tsx}'",
+    "lint": "eslint --ext .js,.ts --ignore-path .gitignore .",
+    "format": "eslint --fix --ext .js,.ts --ignore-path .gitignore .",
     "build": "rm -rf dist && tsc"
   },
   "repository": {
@@ -34,8 +34,12 @@
   "devDependencies": {
     "@types/jest": "^24.0.11",
     "@types/node": "^11.11.3",
+    "@typescript-eslint/eslint-plugin": "^1.4.2",
     "aws-sdk-mock": "^4.3.1",
     "coveralls": "^3.0.3",
+    "eslint": "^5.15.2",
+    "eslint-config-prettier": "^4.1.0",
+    "eslint-plugin-prettier": "^3.0.1",
     "jest": "^24.5.0",
     "prettier": "^1.16.4",
     "ts-jest": "^24.0.0",
