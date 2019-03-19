@@ -12,7 +12,15 @@ export const fetchFromParameterStore = (
     .then((data: GetParametersByPathResult) => {
       if (data.Parameters === undefined) {
         return Promise.reject(
-          new AwsEnvCreatorError("parameterStore Not Found")
+          new AwsEnvCreatorError("ParameterStore is undefined")
+        );
+      }
+
+      if (data.Parameters.length === 0) {
+        return Promise.reject(
+          new AwsEnvCreatorError(
+            "Parameter is not registered in ParameterStore"
+          )
         );
       }
 
@@ -25,6 +33,7 @@ export const fetchFromParameterStore = (
       return Promise.resolve(storeParamsList);
     })
     .catch((error: AWSError) => {
-      return Promise.reject(new AwsEnvCreatorError(error.code, error.stack));
+      const errorCode = error.code === undefined ? error.message : error.code;
+      return Promise.reject(new AwsEnvCreatorError(errorCode, error.stack));
     });
 };
