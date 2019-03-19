@@ -2,7 +2,7 @@ import { createParameterStoreClient } from "../../src/factories";
 import { fetchFromParameterStore } from "../../src/fetchFromParameterStore";
 import { AwsRegion } from "../../src/AwsRegion";
 
-describe("fetchFromParameterStore", () => {
+describe("fetchFromParameterStore.integrationTest", () => {
   it("should be able to fetch Params", async () => {
     const parameterStore = createParameterStoreClient({
       profile: "nekochans-dev",
