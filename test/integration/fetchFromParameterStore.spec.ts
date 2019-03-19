@@ -1,0 +1,28 @@
+import { createParameterStoreClient } from "../../src/factories";
+import { fetchFromParameterStore } from "../../src/fetchFromParameterStore";
+import { AwsRegion } from "../../src/AwsRegion";
+
+describe("fetchFromParameterStore", () => {
+  it("should be able to fetch Params", async () => {
+    const parameterStore = createParameterStoreClient({
+      profile: "nekochans-dev",
+      region: AwsRegion.ap_northeast_1
+    });
+
+    const storeParamsList = await fetchFromParameterStore(
+      parameterStore,
+      "/dev/test-app/news"
+    );
+
+    const expectedList = [
+      {
+        "sendgrid-api-key": "DummySendGridAPIKEY0001"
+      },
+      {
+        "slack-token": "DummySlackToken0001"
+      }
+    ];
+
+    expect(storeParamsList).toEqual(expectedList);
+  });
+});
