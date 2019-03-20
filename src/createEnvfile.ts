@@ -1,11 +1,9 @@
-import {
-  createSecretsManagerClient,
-  ICreateSecretsManagerClientParams
-} from "./factories";
+import { createSecretsManagerClient } from "./factories";
 import { fetchSecretJson } from "./fetchSecretJson";
 import fs from "fs";
 import { promisify } from "util";
 import InvalidFileTypeError from "./error/InvalidFileTypeError";
+import { AwsRegion } from "./AwsRegion";
 
 export enum EnvFileType {
   dotenv = ".env",
@@ -13,11 +11,12 @@ export enum EnvFileType {
   terraform = "terraform.tfvars"
 }
 
-export interface ICreateEnvFileParams
-  extends ICreateSecretsManagerClientParams {
+export interface ICreateEnvFileParams {
   type: EnvFileType | string;
   outputDir: string;
+  region: AwsRegion;
   secretIds: string[];
+  profile?: string;
   outputWhitelist?: string[];
   keyMapping?: { [name: string]: string };
   addParams?: { [name: string]: string | number };
