@@ -203,6 +203,44 @@ The following file will be output.
 }
 ```
 
+## create from AWS ParameterStore
+
+You can generate env file from [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/systems-manager-paramstore.html).
+
+For example, suppose that the following ParameterStore is registered.
+
+| key                                  | value                   |
+|--------------------------------------|-------------------------|
+| /dev/test-app/news/sendgrid-api-key  | DummySendGridAPIKEY0001 | 
+| /dev/test-app/news/slack-token       | DummySlackToken0001     |
+
+You need to specify `parameterPath` instead of `secretIds`.
+
+```typescript
+import { createEnvFile, EnvFileType, AwsRegion } from "@nekonomokochan/aws-env-creator";
+
+(async () => {
+  const params = {
+    type: EnvFileType.dotenv,
+    outputDir: "./",
+    parameterPath: "/dev/test-app/news",
+    profile: "nekochans-dev",
+    region: AwsRegion.ap_northeast_1
+  };
+
+  await createEnvFile(params);
+})();
+```
+
+The contents of the created `.env` are as follows.
+
+```dotenv
+sendgrid-api-key=DummySendGridAPIKEY0001
+slack-token=DummySlackToken0001
+```
+
+`parameterPath` and `secretIds` can be used together.
+
 # A description of the parameter
 
 | parameter       | description                                          | value                                   |
@@ -210,6 +248,7 @@ The following file will be output.
 | type            | The type of file to output                           | Enum `.env` `.envrc` `terraform.tfvars` |
 | outputDir       | Output path                                          | String                                  |
 | secretIds       | Your AWS Secrets Manager ID                          | String[]                                |
+| parameterPath   | Your AWS Parameter Store Path                        | String                                  |
 | profile         | Your AWS CLI Credentials Name                        | String                                  |
 | region          | The region where your AWS Secrets Manager is located | String                                  |
 | outputWhitelist | Output Parameters                                    | String[]                                |
