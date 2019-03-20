@@ -49,4 +49,18 @@ describe("fetchFromParameterStore.integrationTest", () => {
 
     expect(storeParamsList).toEqual(expectedList);
   });
+
+  it("should be able to fetch parameters even if the limit number is exceeded", async () => {
+    const parameterStore = createParameterStoreClient({
+      profile: "nekochans-dev",
+      region: AwsRegion.ap_northeast_1
+    });
+
+    const storeParamsList = await fetchFromParameterStore(
+      parameterStore,
+      "/dev/test-app/sample-list"
+    );
+
+    expect(storeParamsList).toHaveLength(21);
+  });
 });
