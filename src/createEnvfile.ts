@@ -1,9 +1,14 @@
-import { createSecretsManagerClient } from "./factories";
+import {
+  createParameterStoreClient,
+  createSecretsManagerClient
+} from "./factories";
 import { fetchSecretJson } from "./fetchSecretJson";
 import fs from "fs";
 import { promisify } from "util";
 import InvalidFileTypeError from "./error/InvalidFileTypeError";
 import { AwsRegion } from "./AwsRegion";
+import InvalidParamsError from "./error/InvalidParamsError";
+import { fetchFromParameterStore } from "./fetchFromParameterStore";
 
 export enum EnvFileType {
   dotenv = ".env",
@@ -15,7 +20,8 @@ export interface ICreateEnvFileParams {
   type: EnvFileType | string;
   outputDir: string;
   region: AwsRegion;
-  secretIds: string[];
+  secretIds?: string[];
+  parameterPath?: string;
   profile?: string;
   outputWhitelist?: string[];
   keyMapping?: { [name: string]: string };
@@ -30,33 +36,18 @@ export const createEnvFile = async (
     return Promise.reject(new InvalidFileTypeError());
   }
 
-  const secretsManager = createSecretsManagerClient({
-    region: params.region,
-    profile: params.profile
-  });
-
   const outputFile = outputFilenameIncludedPath(params);
-
   const exists = await targetFileExists(outputFile);
   if (exists) {
     await removeFile(outputFile);
   }
 
-  const secretJsons = await Promise.all(
-    params.secretIds.map(async (secretId: string) => {
-      return await fetchSecretJson(secretsManager, secretId);
-    })
-  );
-
-  const outputSecret = createSecretJsonsIncludedInWhitelist(
-    secretJsons,
-    params.outputWhitelist
-  );
+  const awsDataStoreParamsList = await fetchFromAwsDataStore(params);
 
   const outputParams =
     params.addParams === undefined
-      ? outputSecret
-      : outputSecret.concat([params.addParams]);
+      ? awsDataStoreParamsList
+      : awsDataStoreParamsList.concat([params.addParams]);
 
   switch (params.type) {
     case EnvFileType.dotenv:
@@ -111,15 +102,52 @@ const removeFile = async (file: string): Promise<void> => {
   await unlink(file);
 };
 
-const createSecretJsonsIncludedInWhitelist = (
-  secretJsons: { [name: string]: any }[],
+const fetchFromAwsDataStore = async (
+  params: ICreateEnvFileParams
+): Promise<{ [name: string]: any }[]> => {
+  if (params.secretIds === undefined && params.parameterPath === undefined) {
+    return Promise.reject(new InvalidParamsError());
+  }
+
+  let secretJsons: { [name: string]: any }[] = [];
+  if (params.secretIds !== undefined) {
+    const secretsManager = createSecretsManagerClient({
+      region: params.region,
+      profile: params.profile
+    });
+    secretJsons = await Promise.all(
+      params.secretIds.map(async (secretId: string) => {
+        return await fetchSecretJson(secretsManager, secretId);
+      })
+    );
+  }
+
+  let storeParamsList: { [name: string]: any }[] = [];
+  if (params.parameterPath !== undefined) {
+    const parameterStore = createParameterStoreClient(params);
+    storeParamsList = await fetchFromParameterStore(
+      parameterStore,
+      params.parameterPath
+    );
+  }
+
+  const awsDataStoreParamsList = secretJsons.concat(storeParamsList);
+
+  return createParamsListIncludedInWhitelist(
+    awsDataStoreParamsList,
+    params.outputWhitelist
+  );
+};
+
+const createParamsListIncludedInWhitelist = (
+  awsDataStoreParamsList: { [name: string]: any }[],
   outputWhitelist?: string[]
 ): { [name: string]: any }[] => {
   if (outputWhitelist === undefined) {
-    return secretJsons;
+    return awsDataStoreParamsList;
   }
 
-  return secretJsons.map((secretJson: { [name: string]: any }) => {
+  return awsDataStoreParamsList.map((secretJson: { [name: string]: any }) => {
     let whitelistJson = {};
     for (const key of Object.keys(secretJson)) {
       if (outputWhitelist.includes(key)) {
