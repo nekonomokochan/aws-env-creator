@@ -1,39 +1,36 @@
-import { AWSError, SSM } from "aws-sdk";
+import { SSM } from "aws-sdk";
 import AwsEnvCreatorError from "./error/AwsEnvCreatorError";
-import { GetParametersByPathResult } from "aws-sdk/clients/ssm";
 
-export const fetchFromParameterStore = (
+export const fetchFromParameterStore = async (
   parameterStore: SSM,
   parameterPath: string
 ): Promise<{ [name: string]: any }[]> => {
-  return parameterStore
-    .getParametersByPath({ Path: parameterPath, WithDecryption: true })
-    .promise()
-    .then((data: GetParametersByPathResult) => {
-      if (data.Parameters === undefined) {
-        return Promise.reject(
-          new AwsEnvCreatorError("ParameterStore is undefined")
-        );
-      }
+  try {
+    const firstPageData = await parameterStore
+      .getParametersByPath({ Path: parameterPath, WithDecryption: true })
+      .promise();
 
-      if (data.Parameters.length === 0) {
-        return Promise.reject(
-          new AwsEnvCreatorError(
-            "Parameter is not registered in ParameterStore"
-          )
-        );
-      }
+    if (firstPageData.Parameters === undefined) {
+      return Promise.reject(
+        new AwsEnvCreatorError("ParameterStore is undefined")
+      );
+    }
 
-      const storeParamsList = data.Parameters.map(value => {
-        return {
-          [String(value.Name).replace(`${parameterPath}/`, "")]: value.Value
-        };
-      });
+    if (firstPageData.Parameters.length === 0) {
+      return Promise.reject(
+        new AwsEnvCreatorError("Parameter is not registered in ParameterStore")
+      );
+    }
 
-      return Promise.resolve(storeParamsList);
-    })
-    .catch((error: AWSError) => {
-      const errorCode = error.code === undefined ? error.message : error.code;
-      return Promise.reject(new AwsEnvCreatorError(errorCode, error.stack));
+    const storeParamsList = firstPageData.Parameters.map(value => {
+      return {
+        [String(value.Name).replace(`${parameterPath}/`, "")]: value.Value
+      };
     });
+
+    return Promise.resolve(storeParamsList);
+  } catch (error) {
+    const errorCode = error.code === undefined ? error.message : error.code;
+    return Promise.reject(new AwsEnvCreatorError(errorCode, error.stack));
+  }
 };
