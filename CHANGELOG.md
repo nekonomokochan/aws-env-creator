@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.0.0 2019-03-21
+
+Feature
+
+### It became possible to create env file from [AWS Systems Manager Parameter Store](https://docs.aws.amazon.com/en_us/systems-manager/latest/userguide/systems-manager-paramstore.html)
+
+- https://github.com/nekonomokochan/aws-env-creator/issues/40
+- https://github.com/nekonomokochan/aws-env-creator/pull/45
+- https://github.com/nekonomokochan/aws-env-creator/pull/46
+
+### npm packages updated
+
+- https://github.com/nekonomokochan/aws-env-creator/pull/43
+
 ## 1.3.0 2019-01-21
 
 Feature
