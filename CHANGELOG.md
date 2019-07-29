@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.1 2019-07-29
+
+Feature
+
+### npm packages updated
+
+- https://github.com/nekonomokochan/aws-env-creator/pull/50
+
 ## 2.0.0 2019-03-21
 
 Feature
@@ -35,7 +43,7 @@ Feature
 
 ## 1.0.1 2018-12-30
 
-The dependent npm package has been updated to the latest 
+The dependent npm package has been updated to the latest
 
 ## 1.0.0 2018-12-30
 
