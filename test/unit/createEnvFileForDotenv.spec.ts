@@ -21,8 +21,8 @@ describe("createEnvFile.unitTest", () => {
         SecretString: JSON.stringify({
           SECRET_ID: params.SecretId,
           ANOTHER_API_KEY: "another_api_key",
-          ANOTHER_API_SECRET: "another_api_secret"
-        })
+          ANOTHER_API_SECRET: "another_api_secret",
+        }),
       });
     };
 
@@ -34,7 +34,7 @@ describe("createEnvFile.unitTest", () => {
       secretIds: ["dev/app"],
       profile: "nekochans-dev",
       region: AwsRegion.ap_northeast_1,
-      addParams: { APP_URL: "http://localhost/3000" }
+      addParams: { APP_URL: "http://localhost/3000" },
     };
 
     await createEnvFile(params);
@@ -46,7 +46,7 @@ describe("createEnvFile.unitTest", () => {
       "SECRET_ID=dev/app",
       "ANOTHER_API_KEY=another_api_key",
       "ANOTHER_API_SECRET=another_api_secret",
-      "APP_URL=http://localhost/3000"
+      "APP_URL=http://localhost/3000",
     ];
 
     reader.on("line", (data: string) => {
@@ -60,8 +60,8 @@ describe("createEnvFile.unitTest", () => {
         SecretString: JSON.stringify({
           SECRET_ID: params.SecretId,
           ANOTHER_API_KEY: "another_api_key",
-          ANOTHER_API_SECRET: "another_api_secret"
-        })
+          ANOTHER_API_SECRET: "another_api_secret",
+        }),
       });
     };
 
@@ -76,8 +76,8 @@ describe("createEnvFile.unitTest", () => {
       keyMapping: {
         SECRET_ID: "SECRET_CODE",
         ANOTHER_API_KEY: "AWS_API_KEY",
-        ANOTHER_API_SECRET: "AWS_API_SECRET"
-      }
+        ANOTHER_API_SECRET: "AWS_API_SECRET",
+      },
     };
 
     await createEnvFile(params);
@@ -88,7 +88,7 @@ describe("createEnvFile.unitTest", () => {
     const expected = [
       "SECRET_CODE=dev/app",
       "AWS_API_KEY=another_api_key",
-      "AWS_API_SECRET=another_api_secret"
+      "AWS_API_SECRET=another_api_secret",
     ];
 
     reader.on("line", (data: string) => {
@@ -102,8 +102,8 @@ describe("createEnvFile.unitTest", () => {
         SecretString: JSON.stringify({
           SECRET_ID: params.SecretId,
           ANOTHER_API_KEY: "another_api_key",
-          ANOTHER_API_SECRET: "another_api_secret"
-        })
+          ANOTHER_API_SECRET: "another_api_secret",
+        }),
       });
     };
 
@@ -116,7 +116,7 @@ describe("createEnvFile.unitTest", () => {
       profile: "nekochans-dev",
       region: AwsRegion.ap_northeast_1,
       outputWhitelist: ["SECRET_ID", "ANOTHER_API_KEY"],
-      addParams: { APP_URL: "http://localhost/3000" }
+      addParams: { APP_URL: "http://localhost/3000" },
     };
 
     await createEnvFile(params);
@@ -127,7 +127,7 @@ describe("createEnvFile.unitTest", () => {
     const expected = [
       "SECRET_ID=dev/app",
       "ANOTHER_API_KEY=another_api_key",
-      "APP_URL=http://localhost/3000"
+      "APP_URL=http://localhost/3000",
     ];
 
     reader.on("line", (data: string) => {
@@ -141,8 +141,8 @@ describe("createEnvFile.unitTest", () => {
         SecretString: JSON.stringify({
           SECRET_ID: params.SecretId,
           ANOTHER_API_KEY: "another_api_key",
-          ANOTHER_API_SECRET: "another_api_secret"
-        })
+          ANOTHER_API_SECRET: "another_api_secret",
+        }),
       });
     };
 
@@ -155,7 +155,7 @@ describe("createEnvFile.unitTest", () => {
       profile: "nekochans-dev",
       region: AwsRegion.ap_northeast_1,
       addParams: { APP_URL: "http://localhost/3000" },
-      outputFilename: ".env.example"
+      outputFilename: ".env.example",
     };
 
     await createEnvFile(params);
@@ -167,7 +167,7 @@ describe("createEnvFile.unitTest", () => {
       "SECRET_ID=dev/app",
       "ANOTHER_API_KEY=another_api_key",
       "ANOTHER_API_SECRET=another_api_secret",
-      "APP_URL=http://localhost/3000"
+      "APP_URL=http://localhost/3000",
     ];
 
     reader.on("line", (data: string) => {
@@ -181,7 +181,7 @@ describe("createEnvFile.unitTest", () => {
       outputDir: "./",
       secretIds: ["dev/app"],
       profile: "nekochans-dev",
-      region: AwsRegion.ap_northeast_1
+      region: AwsRegion.ap_northeast_1,
     };
 
     await createEnvFile(params)

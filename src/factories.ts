@@ -16,7 +16,7 @@ export const createSecretsManagerClient = (
 ): SecretsManager => {
   if (typeof params.profile === "string") {
     const credentials = new SharedIniFileCredentials({
-      profile: params.profile
+      profile: params.profile,
     });
 
     return new SecretsManager({ region: params.region, credentials });
@@ -30,7 +30,7 @@ export const createParameterStoreClient = (
 ): SSM => {
   if (typeof params.profile === "string") {
     const credentials = new SharedIniFileCredentials({
-      profile: params.profile
+      profile: params.profile,
     });
 
     return new SSM({ region: params.region, credentials });

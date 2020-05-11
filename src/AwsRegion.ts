@@ -14,5 +14,5 @@ export enum AwsRegion {
   ap_southeast_1 = "ap-southeast-1",
   ap_southeast_2 = "ap-southeast-2",
   ap_south_1 = "ap-south-1",
-  sa_east_1 = "sa-east-1"
+  sa_east_1 = "sa-east-1",
 }

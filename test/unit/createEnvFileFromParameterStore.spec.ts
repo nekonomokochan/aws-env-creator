@@ -29,9 +29,9 @@ describe("createEnvFile.unitTest", () => {
             Version: 1,
             LastModifiedDate: "2019-03-18T14:23:17.774Z",
             ARN:
-              "arn:aws:ssm:ap-northeast-1:000000000000:parameter/dev/test-app/weather/SLACK_TOKEN"
-          }
-        ]
+              "arn:aws:ssm:ap-northeast-1:000000000000:parameter/dev/test-app/weather/SLACK_TOKEN",
+          },
+        ],
       });
     };
     AWS.mock("SSM", "getParametersByPath", mockResponse);
@@ -42,7 +42,7 @@ describe("createEnvFile.unitTest", () => {
       region: AwsRegion.ap_northeast_1,
       parameterPath: "/dev/test-app/weather",
       profile: "nekochans-dev",
-      outputFilename: ".env.parameterStoreMock"
+      outputFilename: ".env.parameterStoreMock",
     };
 
     await createEnvFile(params);
@@ -71,9 +71,9 @@ describe("createEnvFile.unitTest", () => {
             Version: 1,
             LastModifiedDate: "2019-03-18T14:23:17.774Z",
             ARN:
-              "arn:aws:ssm:ap-northeast-1:000000000000:parameter/dev/test-app/weather/GITHUB_TOKEN"
-          }
-        ]
+              "arn:aws:ssm:ap-northeast-1:000000000000:parameter/dev/test-app/weather/GITHUB_TOKEN",
+          },
+        ],
       });
     };
     AWS.mock("SSM", "getParametersByPath", mockResponse);
@@ -86,8 +86,8 @@ describe("createEnvFile.unitTest", () => {
         SecretString: JSON.stringify({
           SECRET_ID: params.SecretId,
           API_KEY: "api_key",
-          API_SECRET: "api_secret"
-        })
+          API_SECRET: "api_secret",
+        }),
       });
     };
     AWS.mock("SecretsManager", "getSecretValue", getSecretValueMockResponse);
@@ -99,7 +99,7 @@ describe("createEnvFile.unitTest", () => {
       secretIds: ["dev/app"],
       parameterPath: "/dev/test-app/weather",
       profile: "nekochans-dev",
-      outputFilename: ".env.parameterStoreSecretsManagerMock"
+      outputFilename: ".env.parameterStoreSecretsManagerMock",
     };
 
     await createEnvFile(params);
@@ -113,7 +113,7 @@ describe("createEnvFile.unitTest", () => {
       "SECRET_ID=dev/app",
       "API_KEY=api_key",
       "API_SECRET=api_secret",
-      "GITHUB_TOKEN=DummyGitHubToken0001"
+      "GITHUB_TOKEN=DummyGitHubToken0001",
     ];
 
     reader.on("line", (data: string) => {

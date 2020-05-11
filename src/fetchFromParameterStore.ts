@@ -24,9 +24,9 @@ export const fetchFromParameterStore = async (
     }
 
     if (firstPageData.NextToken === undefined) {
-      const storeParamsList = firstPageData.Parameters.map(value => {
+      const storeParamsList = firstPageData.Parameters.map((value) => {
         return {
-          [String(value.Name).replace(`${parameterPath}/`, "")]: value.Value
+          [String(value.Name).replace(`${parameterPath}/`, "")]: value.Value,
         };
       });
 
@@ -56,9 +56,9 @@ export const fetchFromParameterStore = async (
         parametersResult.Parameters !== undefined
           ? parametersResult.Parameters
           : [];
-      parameters.forEach(value => {
+      parameters.forEach((value) => {
         storeParamsList.push({
-          [String(value.Name).replace(`${parameterPath}/`, "")]: value.Value
+          [String(value.Name).replace(`${parameterPath}/`, "")]: value.Value,
         });
       });
     });
@@ -80,7 +80,7 @@ const fetchFromWithNextToken = async (
       .getParametersByPath({
         Path: parameterPath,
         WithDecryption: true,
-        NextToken: nextToken
+        NextToken: nextToken,
       })
       .promise();
 
