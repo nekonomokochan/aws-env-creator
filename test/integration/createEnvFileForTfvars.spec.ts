@@ -123,4 +123,22 @@ describe("createTfvars.integrationTest", () => {
       expect(expected.includes(data)).toBeTruthy();
     });
   });
+
+  it("should give an authentication error, because the profile name is wrong", async () => {
+    try {
+      const params = {
+        type: EnvFileType.terraform,
+        outputDir: "./",
+        secretIds: ["dev/app"],
+        profile: "unknown",
+        region: AwsRegion.ap_northeast_1,
+      };
+
+      const result = await createEnvFile(params);
+      fail(result);
+    } catch (error) {
+      expect(error.message).toStrictEqual("CredentialsError");
+      expect(error.name).toStrictEqual("AwsEnvCreatorError");
+    }
+  });
 });

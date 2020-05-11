@@ -65,4 +65,27 @@ describe("createEnvFile.integrationTest", () => {
       expect(expected.includes(data)).toBeTruthy();
     });
   });
+
+  it("should give an authentication error, because the profile name is wrong", async () => {
+    try {
+      const params = {
+        type: EnvFileType.dotenv,
+        outputDir: "./",
+        region: AwsRegion.ap_northeast_1,
+        parameterPath: "/dev/test-app/weather",
+        profile: "unknown",
+        outputWhitelist: ["sendgrid-api-key"],
+        outputFilename: ".env.parameterStore",
+        keyMapping: {
+          "sendgrid-api-key": "SENDGRID_API_KEY",
+        },
+      };
+
+      const result = await createEnvFile(params);
+      fail(result);
+    } catch (error) {
+      expect(error.message).toStrictEqual("CredentialsError");
+      expect(error.name).toStrictEqual("AwsEnvCreatorError");
+    }
+  });
 });

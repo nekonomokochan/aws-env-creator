@@ -63,4 +63,23 @@ describe("fetchFromParameterStore.integrationTest", () => {
 
     expect(storeParamsList).toHaveLength(21);
   });
+
+  it("should give an authentication error, because the profile name is wrong", async () => {
+    try {
+      const parameterStore = createParameterStoreClient({
+        profile: "unknown",
+        region: AwsRegion.ap_northeast_1,
+      });
+
+      const storeParamsList = await fetchFromParameterStore(
+        parameterStore,
+        "/dev/test-app/news"
+      );
+
+      fail(storeParamsList);
+    } catch (error) {
+      expect(error.message).toStrictEqual("CredentialsError");
+      expect(error.name).toStrictEqual("AwsEnvCreatorError");
+    }
+  });
 });
