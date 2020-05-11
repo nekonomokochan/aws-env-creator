@@ -14,8 +14,8 @@ describe("createEnvFile.integrationTest", () => {
       outputWhitelist: ["sendgrid-api-key"],
       outputFilename: ".env.parameterStore",
       keyMapping: {
-        "sendgrid-api-key": "SENDGRID_API_KEY"
-      }
+        "sendgrid-api-key": "SENDGRID_API_KEY",
+      },
     };
 
     await createEnvFile(params);
@@ -41,8 +41,8 @@ describe("createEnvFile.integrationTest", () => {
       outputFilename: ".env.parameterStoreAndSecretsManager",
       keyMapping: {
         "sendgrid-api-key": "SENDGRID_API_KEY",
-        "slack-token": "SLACK_TOKEN"
-      }
+        "slack-token": "SLACK_TOKEN",
+      },
     };
 
     await createEnvFile(params);
@@ -58,7 +58,7 @@ describe("createEnvFile.integrationTest", () => {
       "DB_USER=admin",
       "DB_PASSWORD=AdminPassword",
       "SENDGRID_API_KEY=DummySendGridAPIKEY0001",
-      "SLACK_TOKEN=DummySlackToken0001"
+      "SLACK_TOKEN=DummySlackToken0001",
     ];
 
     reader.on("line", (data: string) => {

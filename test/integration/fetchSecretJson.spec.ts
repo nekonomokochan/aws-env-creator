@@ -6,14 +6,14 @@ describe("fetchSecretJson.integrationTest", () => {
   it("should be able to fetch Secret JSON", async () => {
     const secretsManager = createSecretsManagerClient({
       profile: "nekochans-dev",
-      region: AwsRegion.ap_northeast_1
+      region: AwsRegion.ap_northeast_1,
     });
 
     const secretJson = await fetchSecretJson(secretsManager, "dev/app");
 
     const expectedJson = {
       API_KEY: "My API Key",
-      API_SECRET: "My API Secret"
+      API_SECRET: "My API Secret",
     };
 
     expect(secretJson).toEqual(expectedJson);
@@ -23,14 +23,14 @@ describe("fetchSecretJson.integrationTest", () => {
     // In order to make this test successful,
     // the same credentials as nekochans-dev must be set in the default profile of aws
     const secretsManager = createSecretsManagerClient({
-      region: AwsRegion.ap_northeast_1
+      region: AwsRegion.ap_northeast_1,
     });
 
     const secretJson = await fetchSecretJson(secretsManager, "dev/app");
 
     const expectedJson = {
       API_KEY: "My API Key",
-      API_SECRET: "My API Secret"
+      API_SECRET: "My API Secret",
     };
 
     expect(secretJson).toEqual(expectedJson);

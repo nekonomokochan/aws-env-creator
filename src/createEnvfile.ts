@@ -1,6 +1,6 @@
 import {
   createParameterStoreClient,
-  createSecretsManagerClient
+  createSecretsManagerClient,
 } from "./factories";
 import { fetchSecretJson } from "./fetchSecretJson";
 import fs from "fs";
@@ -13,7 +13,7 @@ import { fetchFromParameterStore } from "./fetchFromParameterStore";
 export enum EnvFileType {
   dotenv = ".env",
   direnv = ".envrc",
-  terraform = "terraform.tfvars"
+  terraform = "terraform.tfvars",
 }
 
 export interface ICreateEnvFileParams {
@@ -77,7 +77,7 @@ const isAllowedFileType = (type: string): boolean => {
 const outputFilenameIncludedPath = ({
   type,
   outputDir,
-  outputFilename
+  outputFilename,
 }: ICreateEnvFileParams): string => {
   return outputFilename === undefined
     ? `${outputDir}${type}`
@@ -113,7 +113,7 @@ const fetchFromAwsDataStore = async (
   if (params.secretIds !== undefined) {
     const secretsManager = createSecretsManagerClient({
       region: params.region,
-      profile: params.profile
+      profile: params.profile,
     });
     secretJsons = await Promise.all(
       params.secretIds.map(async (secretId: string) => {

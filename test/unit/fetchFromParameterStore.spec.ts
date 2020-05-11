@@ -28,7 +28,7 @@ describe("fetchFromParameterStore.unitTest", () => {
             Version: 1,
             LastModifiedDate: "2019-03-18T14:23:17.774Z",
             ARN:
-              "arn:aws:ssm:ap-northeast-1:000000000000:parameter/dev/test-app/weather/API_TOKEN"
+              "arn:aws:ssm:ap-northeast-1:000000000000:parameter/dev/test-app/weather/API_TOKEN",
           },
           {
             Name: `${params.Path}/API_SECRET`,
@@ -37,9 +37,9 @@ describe("fetchFromParameterStore.unitTest", () => {
             Version: 1,
             LastModifiedDate: "2019-03-18T14:23:17.774Z",
             ARN:
-              "arn:aws:ssm:ap-northeast-1:000000000000:parameter/dev/test-app/weather/API_SECRET"
-          }
-        ]
+              "arn:aws:ssm:ap-northeast-1:000000000000:parameter/dev/test-app/weather/API_SECRET",
+          },
+        ],
       });
     };
 
@@ -53,11 +53,11 @@ describe("fetchFromParameterStore.unitTest", () => {
 
     const expectedList = [
       {
-        API_TOKEN: "DummyAPIToken0001"
+        API_TOKEN: "DummyAPIToken0001",
       },
       {
-        API_SECRET: "DummyAPISecret0001"
-      }
+        API_SECRET: "DummyAPISecret0001",
+      },
     ];
 
     expect(storeParamsList).toEqual(expectedList);
@@ -76,7 +76,7 @@ describe("fetchFromParameterStore.unitTest", () => {
 
     const client = new SSM();
     await fetchFromParameterStore(client, "/dev/test-app/dummy")
-      .then(storeParamsList => {
+      .then((storeParamsList) => {
         fail(storeParamsList);
       })
       .catch((error: AwsEnvCreatorError) => {
@@ -91,7 +91,7 @@ describe("fetchFromParameterStore.unitTest", () => {
       callback: any
     ) => {
       callback(null, {
-        Parameters: []
+        Parameters: [],
       });
     };
 
@@ -99,7 +99,7 @@ describe("fetchFromParameterStore.unitTest", () => {
 
     const client = new SSM();
     await fetchFromParameterStore(client, "/dev/test-app/dummy")
-      .then(storeParamsList => {
+      .then((storeParamsList) => {
         fail(storeParamsList);
       })
       .catch((error: AwsEnvCreatorError) => {
@@ -123,7 +123,7 @@ describe("fetchFromParameterStore.unitTest", () => {
 
     const client = new SSM();
     await fetchFromParameterStore(client, "/dev/test-app/error")
-      .then(storeParamsList => {
+      .then((storeParamsList) => {
         fail(storeParamsList);
       })
       .catch((error: AwsEnvCreatorError) => {
@@ -145,7 +145,7 @@ describe("fetchFromParameterStore.unitTest", () => {
 
     const client = new SSM();
     await fetchFromParameterStore(client, "/dev/test-app/error")
-      .then(storeParamsList => {
+      .then((storeParamsList) => {
         fail(storeParamsList);
       })
       .catch((error: AwsEnvCreatorError) => {
@@ -167,7 +167,7 @@ describe("fetchFromParameterStore.unitTest", () => {
 
     const client = new SSM();
     await fetchFromParameterStore(client, "/dev/test-app/error")
-      .then(storeParamsList => {
+      .then((storeParamsList) => {
         fail(storeParamsList);
       })
       .catch((error: AwsEnvCreatorError) => {
@@ -189,7 +189,7 @@ describe("fetchFromParameterStore.unitTest", () => {
 
     const client = new SSM();
     await fetchFromParameterStore(client, "/dev/test-app/error")
-      .then(storeParamsList => {
+      .then((storeParamsList) => {
         fail(storeParamsList);
       })
       .catch((error: AwsEnvCreatorError) => {
@@ -211,7 +211,7 @@ describe("fetchFromParameterStore.unitTest", () => {
 
     const client = new SSM();
     await fetchFromParameterStore(client, "/dev/test-app/error")
-      .then(storeParamsList => {
+      .then((storeParamsList) => {
         fail(storeParamsList);
       })
       .catch((error: AwsEnvCreatorError) => {
@@ -233,7 +233,7 @@ describe("fetchFromParameterStore.unitTest", () => {
 
     const client = new SSM();
     await fetchFromParameterStore(client, "/dev/test-app/error")
-      .then(storeParamsList => {
+      .then((storeParamsList) => {
         fail(storeParamsList);
       })
       .catch((error: AwsEnvCreatorError) => {

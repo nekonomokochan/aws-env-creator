@@ -11,7 +11,7 @@ describe("createEnvFile.integrationTest", () => {
       outputDir: "./",
       secretIds: ["dev/app"],
       profile: "nekochans-dev",
-      region: AwsRegion.ap_northeast_1
+      region: AwsRegion.ap_northeast_1,
     };
 
     await createEnvFile(params);
@@ -21,7 +21,7 @@ describe("createEnvFile.integrationTest", () => {
 
     const expected = [
       "export API_KEY=My API Key",
-      "export API_SECRET=My API Secret"
+      "export API_SECRET=My API Secret",
     ];
 
     reader.on("line", (data: string) => {
@@ -40,8 +40,8 @@ describe("createEnvFile.integrationTest", () => {
         API_KEY: "AWS_API_KEY",
         API_SECRET: "AWS_API_SECRET",
         DB_USER: "ADMIN_DB_USER",
-        DB_PASSWORD: "ADMIN_DB_PASSWORD"
-      }
+        DB_PASSWORD: "ADMIN_DB_PASSWORD",
+      },
     };
 
     await createEnvFile(params);
@@ -53,7 +53,7 @@ describe("createEnvFile.integrationTest", () => {
       "export AWS_API_KEY=My API Key",
       "export AWS_API_SECRET=My API Secret",
       "export ADMIN_DB_USER=admin",
-      "export ADMIN_DB_PASSWORD=AdminPassword"
+      "export ADMIN_DB_PASSWORD=AdminPassword",
     ];
 
     reader.on("line", (data: string) => {
@@ -71,11 +71,11 @@ describe("createEnvFile.integrationTest", () => {
       outputWhitelist: ["BACKEND_URL", "QIITA_REDIRECT_URI"],
       keyMapping: {
         BACKEND_URL: "VUE_APP_API_URL_BASE",
-        QIITA_REDIRECT_URI: "VUE_APP_QIITA_REDIRECT_URI"
+        QIITA_REDIRECT_URI: "VUE_APP_QIITA_REDIRECT_URI",
       },
       addParams: {
-        VUE_APP_STAGE: "stg"
-      }
+        VUE_APP_STAGE: "stg",
+      },
     };
 
     await createEnvFile(params);
@@ -86,7 +86,7 @@ describe("createEnvFile.integrationTest", () => {
     const expected = [
       "export VUE_APP_STAGE=stg",
       "export VUE_APP_API_URL_BASE=https://stg-api.sample.net",
-      "export VUE_APP_QIITA_REDIRECT_URI=https://stg-www.sample.net/oauth/callback"
+      "export VUE_APP_QIITA_REDIRECT_URI=https://stg-www.sample.net/oauth/callback",
     ];
 
     reader.on("line", (data: string) => {
@@ -104,12 +104,12 @@ describe("createEnvFile.integrationTest", () => {
       outputWhitelist: ["BACKEND_URL", "QIITA_REDIRECT_URI"],
       keyMapping: {
         BACKEND_URL: "VUE_APP_API_URL_BASE",
-        QIITA_REDIRECT_URI: "VUE_APP_QIITA_REDIRECT_URI"
+        QIITA_REDIRECT_URI: "VUE_APP_QIITA_REDIRECT_URI",
       },
       addParams: {
-        VUE_APP_STAGE: "stg"
+        VUE_APP_STAGE: "stg",
       },
-      outputFilename: ".envrc.sample"
+      outputFilename: ".envrc.sample",
     };
 
     await createEnvFile(params);
@@ -120,7 +120,7 @@ describe("createEnvFile.integrationTest", () => {
     const expected = [
       "export VUE_APP_STAGE=stg",
       "export VUE_APP_API_URL_BASE=https://stg-api.sample.net",
-      "export VUE_APP_QIITA_REDIRECT_URI=https://stg-www.sample.net/oauth/callback"
+      "export VUE_APP_QIITA_REDIRECT_URI=https://stg-www.sample.net/oauth/callback",
     ];
 
     reader.on("line", (data: string) => {
@@ -135,7 +135,7 @@ describe("createEnvFile.integrationTest", () => {
       type: EnvFileType.direnv,
       outputDir: "./",
       secretIds: ["dev/app"],
-      region: AwsRegion.ap_northeast_1
+      region: AwsRegion.ap_northeast_1,
     };
 
     await createEnvFile(params);
@@ -145,7 +145,7 @@ describe("createEnvFile.integrationTest", () => {
 
     const expected = [
       "export API_KEY=My API Key",
-      "export API_SECRET=My API Secret"
+      "export API_SECRET=My API Secret",
     ];
 
     reader.on("line", (data: string) => {
@@ -159,7 +159,7 @@ describe("createEnvFile.integrationTest", () => {
       outputDir: "./",
       secretIds: ["dev/app"],
       profile: "nekochans-dev",
-      region: AwsRegion.ap_northeast_1
+      region: AwsRegion.ap_northeast_1,
     };
 
     await createEnvFile(params)

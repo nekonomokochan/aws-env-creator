@@ -19,8 +19,8 @@ describe("fetchSecretJson.unitTest", () => {
         SecretString: JSON.stringify({
           SECRET_ID: params.SecretId,
           ANOTHER_API_KEY: "another_api_key",
-          ANOTHER_API_SECRET: "another_api_secret"
-        })
+          ANOTHER_API_SECRET: "another_api_secret",
+        }),
       });
     };
 
@@ -32,7 +32,7 @@ describe("fetchSecretJson.unitTest", () => {
     const expectedJson = {
       SECRET_ID: "dev/app",
       ANOTHER_API_KEY: "another_api_key",
-      ANOTHER_API_SECRET: "another_api_secret"
+      ANOTHER_API_SECRET: "another_api_secret",
     };
 
     expect(secretJson).toEqual(expectedJson);
