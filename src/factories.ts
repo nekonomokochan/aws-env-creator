@@ -1,5 +1,6 @@
 import { SecretsManager, SharedIniFileCredentials, SSM } from "aws-sdk";
 import { AwsRegion } from "./AwsRegion";
+import AwsEnvCreatorError from "./error/AwsEnvCreatorError";
 
 export interface ICreateSecretsManagerClientParams {
   region: AwsRegion;
@@ -14,27 +15,35 @@ export interface ICreateParameterStoreClientParams {
 export const createSecretsManagerClient = (
   params: ICreateSecretsManagerClientParams
 ): SecretsManager => {
-  if (typeof params.profile === "string") {
-    const credentials = new SharedIniFileCredentials({
-      profile: params.profile,
-    });
+  try {
+    if (typeof params.profile === "string") {
+      const credentials = new SharedIniFileCredentials({
+        profile: params.profile,
+      });
 
-    return new SecretsManager({ region: params.region, credentials });
+      return new SecretsManager({ region: params.region, credentials });
+    }
+
+    return new SecretsManager({ region: params.region });
+  } catch (error) {
+    throw new AwsEnvCreatorError(error.message, error);
   }
-
-  return new SecretsManager({ region: params.region });
 };
 
 export const createParameterStoreClient = (
   params: ICreateParameterStoreClientParams
 ): SSM => {
-  if (typeof params.profile === "string") {
-    const credentials = new SharedIniFileCredentials({
-      profile: params.profile,
-    });
+  try {
+    if (typeof params.profile === "string") {
+      const credentials = new SharedIniFileCredentials({
+        profile: params.profile,
+      });
 
-    return new SSM({ region: params.region, credentials });
+      return new SSM({ region: params.region, credentials });
+    }
+
+    return new SSM({ region: params.region });
+  } catch (error) {
+    throw new AwsEnvCreatorError(error.message, error);
   }
-
-  return new SSM({ region: params.region });
 };
